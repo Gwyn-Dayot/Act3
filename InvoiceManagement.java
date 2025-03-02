@@ -13,11 +13,11 @@ public class InvoiceManagement {
     public void manageInvoices() {
         while (true) {
             System.out.println("\nInvoice Management:");
-            System.out.println("1. Create Invoice");
-            System.out.println("2. View Invoices");
-            System.out.println("3. Update Invoice");
-            System.out.println("4. Delete Invoice");
-            System.out.println("5. Back to Main Menu");
+            System.out.println("[1] Create Invoice");
+            System.out.println("[2] View Invoices");
+            System.out.println("[3] Update Invoice");
+            System.out.println("[4] Delete Invoice");
+            System.out.println("[5] Back to Main Menu");
             System.out.print("Select an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();

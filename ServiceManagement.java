@@ -13,9 +13,11 @@ class ServiceManagement {
     public void manageServices() {
         while (true) {
             System.out.println("\nService Management");
-            System.out.println("1. Add Service");
-            System.out.println("2. View Services");
-            System.out.println("3. Back");
+            System.out.println("[1] Add Service");
+            System.out.println("[2] View Services");
+            System.out.println("[3] Update Service");
+            System.out.println("[4] Delete Service");
+            System.out.println("[5] Back");
             System.out.print("Select an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -37,14 +39,14 @@ class ServiceManagement {
         try {
             System.out.print("Enter service name: ");
             String name = scanner.nextLine();
-            System.out.print("Enter service price: ");
-            double price = scanner.nextDouble();
+            System.out.print("Enter service hourly rate: ");
+            double hourly_rate = scanner.nextDouble();
             scanner.nextLine();
             
-            String sql = "inisert into services (sname, price) values (?, ?)";
+            String sql = "insert into services (sname, hourly_rate) values (?, ?)";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, name);
-                stmt.setDouble(2, price);
+                stmt.setDouble(2, hourly_rate);
                 stmt.executeUpdate();
                 System.out.println("Service added");
             }
@@ -57,7 +59,7 @@ class ServiceManagement {
         try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("select * from services")) {
             System.out.println("\nServices:");
             while (rs.next()) {
-                System.out.println(rs.getInt("s_id") + " - " + rs.getString("sname") + " ($" + rs.getDouble("price") + ")");
+                System.out.println(rs.getInt("s_id") + " - " + rs.getString("sname") + " ($" + rs.getDouble("hourly_rate") + ")");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,14 +73,14 @@ class ServiceManagement {
             scanner.nextLine();
             System.out.print("Enter new service name: ");
             String newName = scanner.nextLine();
-            System.out.print("Enter new price: ");
-            double newPrice = scanner.nextDouble();
+            System.out.print("Enter new hourly rate: ");
+            double newHourly_rate = scanner.nextDouble();
             scanner.nextLine();
             
-            String sql = "update services set sname = ?, price = ? where s_id = ?";
+            String sql = "update services set sname = ?, hourly_rate = ? where s_id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, newName);
-                stmt.setDouble(2, newPrice);
+                stmt.setDouble(2, newHourly_rate);
                 stmt.setInt(3, serviceId);
                 stmt.executeUpdate();
                 System.out.println("Service updated");

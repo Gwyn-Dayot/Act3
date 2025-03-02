@@ -27,8 +27,8 @@ class ClientManagement {
             switch (choice) {
                 case 1 -> addClient(conn);
                 case 2 -> viewClients(conn);
-               // case 3 -> updateClient(conn);
-               // case 4 -> deleteClient(conn);
+                case 3 -> updateClient(conn);
+                case 4 -> deleteClient(conn);
                 case 5 -> {
                     return;
                 }
