@@ -36,8 +36,8 @@ public class InvoiceManagementCLI {
             
             switch (choice) {
                 case 1 -> manageClients(conn);
-                case 2 -> manageServices(conn);
-                case 3 -> manageInvoices(conn);
+              //  case 2 -> manageServices(conn);
+              //  case 3 -> manageInvoices(conn);
                 case 4 -> {
                     System.out.println("Exiting...");
                     return;
@@ -64,8 +64,8 @@ public class InvoiceManagementCLI {
             switch (choice) {
                 case 1 -> addClient(conn);
                 case 2 -> viewClients(conn);
-                case 3 -> updateClient(conn);
-                case 4 -> deleteClient(conn);
+               // case 3 -> updateClient(conn);
+               // case 4 -> deleteClient(conn);
                 case 5 -> {
                     return;
                 }
@@ -74,5 +74,34 @@ public class InvoiceManagementCLI {
         }
     }
 
-    
+    private static void addClient(Connection conn) {
+        try {
+            System.out.println("Enter client name: ");
+            String name = scanner.nextLine();
+
+            System.out.println("Enter phone number: ");
+            String phone = scanner.nextLine();
+
+            String sql = "insert into clients (cname, phone) values (?, ?)";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, name);
+                    stmt.setString(2, phone);
+                    stmt.executeUpdate();
+            System.out.println("]\nClient added");
+                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void viewClients(Connection conn) {
+        try ( Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("select *  from clients")) {
+            System.out.println("\nClients");
+            while (rs.next()) {
+                System.out.println(rs.getInt("c_id") + " - " + rs.getString("cname" + "[ " + rs.getString("phone") + "]" ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }   
