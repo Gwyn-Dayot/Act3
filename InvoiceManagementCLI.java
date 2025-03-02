@@ -23,26 +23,26 @@ public class InvoiceManagementCLI {
 
     private static void runEventLoop(Connection conn) {
         while (true) {
-            System.out.println("\nInvoice Management System:");
-            System.out.println("1. Add Client");
-            System.out.println("2. View Clients");
-            System.out.println("3. Create Invoice");
-            System.out.println("4. View Invoices");
-            System.out.println("5. Exit");
-            System.out.print("Select an option: ");
+            System.out.println("\nVirtual Assistant Invoice System");
+            System.out.println("");
+
+            System.out.println("[1] Client Management");
+            System.out.println("[2] Service Management");
+            System.out.println("[3] Invoice Management");
+            System.out.println("[4] Exit ");
+
             int choice = scanner.nextInt();
             scanner.nextLine();
-
+            
             switch (choice) {
-                case 1 -> addClient(conn);
-                case 2 -> viewClients(conn);
-                case 3 -> createInvoice(conn);
-                case 4 -> viewInvoices(conn);
-                case 5 -> {
+                case 1 -> manageClients(conn);
+                case 2 -> manageServices(conn);
+                case 3 -> manageInvoices(conn);
+                case 4 -> {
                     System.out.println("Exiting...");
                     return;
                 }
-                default -> System.out.println("Invalid option. Try again.");
+                default -> System.out.println("Invalid option. Select again");
             }
         }
     }
