@@ -98,7 +98,7 @@ public class InvoiceManagementCLI {
         try ( Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("select *  from clients")) {
             System.out.println("\nClients");
             while (rs.next()) {
-                System.out.println(rs.getInt("c_id") + " - " + rs.getString("cname" + "[ " + rs.getString("phone") + "]" ));
+                System.out.println(rs.getInt("c_id") + " - " + rs.getString("cname") + " (" + rs.getString("phone") + ")");
             }
         } catch (SQLException e) {
             e.printStackTrace();
