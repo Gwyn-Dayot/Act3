@@ -12,16 +12,19 @@ public class InvoiceManagementCLI {
             Class.forName("com.mysql.cj.jdbc.Driver");  
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             System.out.println("Connected to the database successfully.");
-            runEventLoop(conn);
-        } catch (ClassNotFoundException e) {
-            System.out.println("MySQL JDBC Driver not found.");
-            e.printStackTrace();
-        } catch (SQLException e) {
+
+            ClientManagement clientManagement = new ClientManagement(conn, scanner);
+            ServiceManagement serviceManagement = new ServiceManagement(conn, scanner);
+            InvoiceManagement invoiceManagement = new InvoiceManagement(conn, scanner);
+
+            runEventLoop(clientManagement, serviceManagement, invoiceManagement);
+
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }    
 
-    private static void runEventLoop(Connection conn) {
+    public static void runEventLoop(ClientManagement clientManagement, ServiceManagement serviceManagement, InvoiceManagement invoiceManagement) {
         while (true) {
             System.out.println("\nVirtual Assistant Invoice System");
             System.out.println("Choose: ");
@@ -35,73 +38,15 @@ public class InvoiceManagementCLI {
             scanner.nextLine();
             
             switch (choice) {
-                case 1 -> manageClients(conn);
-              //  case 2 -> manageServices(conn);
-              //  case 3 -> manageInvoices(conn);
+                case 1 -> clientManagement.manageClients();
+                case 2 -> serviceManagement.manageServices();
+                case 3 -> invoiceManagement.manageInvoices();
                 case 4 -> {
                     System.out.println("Exiting...");
                     return;
                 }
                 default -> System.out.println("Invalid option. Select again");
             }
-        }
-    }
-
-    private static void manageClients(Connection conn) {
-        while (true) { 
-            System.out.println("\n Client Management");
-            System.out.println("Choose: ");
-
-            System.out.println("[1] Add Client");
-            System.out.println("[2] View Client");
-            System.out.println("[3] Update Client");
-            System.out.println("[4] Delete Client");
-            System.out.println("[5] Back to Menu");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (choice) {
-                case 1 -> addClient(conn);
-                case 2 -> viewClients(conn);
-               // case 3 -> updateClient(conn);
-               // case 4 -> deleteClient(conn);
-                case 5 -> {
-                    return;
-                }
-                default -> System.out.println("Invalid option. Try again");
-            }
-        }
-    }
-
-    private static void addClient(Connection conn) {
-        try {
-            System.out.println("Enter client name: ");
-            String name = scanner.nextLine();
-
-            System.out.println("Enter phone number: ");
-            String phone = scanner.nextLine();
-
-            String sql = "insert into clients (cname, phone) values (?, ?)";
-                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                    stmt.setString(1, name);
-                    stmt.setString(2, phone);
-                    stmt.executeUpdate();
-            System.out.println("]\nClient added");
-                }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void viewClients(Connection conn) {
-        try ( Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("select *  from clients")) {
-            System.out.println("\nClients");
-            while (rs.next()) {
-                System.out.println(rs.getInt("c_id") + " - " + rs.getString("cname") + " (" + rs.getString("phone") + ")");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }   
